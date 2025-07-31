@@ -1,5 +1,3 @@
-from typing import Optional
-
 from django.db.models import QuerySet
 
 from db.models import MovieSession, Ticket
@@ -42,7 +40,7 @@ def update_movie_session(
     movie_session.save()
 
 
-def delete_movie_session_by_id(session_id: int) -> Optional[MovieSession]:
+def delete_movie_session_by_id(session_id: int) -> None:
     MovieSession.objects.get(id=session_id).delete()
 
 

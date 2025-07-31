@@ -1,6 +1,7 @@
 from typing import Optional
 
-from db.models import User
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractBaseUser
 
 
 def create_user(
@@ -9,8 +10,9 @@ def create_user(
         email: str = None,
         first_name: str = None,
         last_name: str = None
-) -> Optional[User]:
-    return User.objects.create_user(
+) -> Optional[AbstractBaseUser]:
+    user_model = get_user_model()
+    return user_model.objects.create_user(
         username=username,
         password=password,
         email=email,
@@ -25,7 +27,8 @@ def get_user(
         password: str = None,
         email: str = None,
         first_name: str = None,
-) -> User:
+) -> AbstractBaseUser:
+    user_model = get_user_model()
     filters = {}
     if user_id:
         filters["pk"] = user_id
@@ -38,7 +41,7 @@ def get_user(
     if first_name:
         filters["first_name"] = first_name
 
-    return User.objects.get(**filters)
+    return user_model.objects.get(**filters)
 
 
 def update_user(
@@ -49,7 +52,8 @@ def update_user(
         first_name: str = None,
         last_name: str = None,
 ) -> None:
-    user = User.objects.get(pk=user_id)
+    user_model = get_user_model()
+    user = user_model.objects.get(pk=user_id)
     if username:
         user.username = username
     if password:
